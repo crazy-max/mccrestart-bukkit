@@ -102,6 +102,19 @@ public class TimeUtils {
         return result;
     }
     
+    public static String compare(String time1, String time2)
+    {
+    	String[] time1s = time1.split(":");
+    	TimeUtils timeu1 = new TimeUtils(Integer.parseInt(time1s[0]), Integer.parseInt(time1s[1]), Integer.parseInt(time1s[2]));
+    	int time1sec = timeu1.toSeconds();
+    	    	
+    	String[] time2s = time2.split(":");
+    	TimeUtils timeu2 = new TimeUtils(Integer.parseInt(time2s[0]), Integer.parseInt(time2s[1]), Integer.parseInt(time2s[2]));
+    	int time2sec = timeu2.toSeconds();
+    	
+    	return time1sec < time2sec ? time1 : time2;
+    }
+    
     public void reset(TimeUtils delay)
     {
     	int today = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) * 60 * 60;

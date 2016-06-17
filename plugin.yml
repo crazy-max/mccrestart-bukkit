@@ -1,5 +1,5 @@
 name: MCCRestart
-version: 1.2.0
+version: 1.2.2
 author: Cr@zy
 main: fr.crazyws.mccrestart.MCCRestart
 commands:
@@ -11,6 +11,12 @@ commands:
       /<command> reload - Reload the plugin configuration
       /<command> next - Give the next time to restart
       /restart - Restart the server immediately
+      /restart 59:59 - Restart after a delay (minutes:seconds)
+      /restart 59:59 "reason" - Restart after a delay with a reason
   restart:
     description: Restart the server immediately
-    usage: /<command>
+    usage: |
+      /<command> - Restart the server immediately
+      /<command> 59:59 - Restart after a delay (minutes:seconds)
+      /<command> 59:59 "reason" - Restart after a delay with a reason
+      /<command> cancel - Cancel a manual restart

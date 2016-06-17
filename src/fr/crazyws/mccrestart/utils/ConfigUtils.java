@@ -29,6 +29,8 @@ public class ConfigUtils {
 	public static String inactiveMsg;
 	public static String reloadMsg;
 	public static String nextMsg;
+	public static String reasonMsg;
+	public static String cancelMsg;
 
 	public ConfigUtils(String config, String directory, String filename)
 	{
@@ -57,6 +59,8 @@ public class ConfigUtils {
 			inactiveMsg = GetString("messages.inactive", MCCRestart.name + " disabled");
 			reloadMsg = GetString("messages.reload", MCCRestart.name + " reloaded");
 			nextMsg = GetString("messages.next", "Next restart scheduled at {0}");
+			reasonMsg = GetString("messages.reason", "Reason: {0}");
+			cancelMsg = GetString("messages.cancel", "Manual restart cancelled");
 		}
 	}
 	

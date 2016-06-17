@@ -6,3 +6,5 @@
     inactive: 'MCCRestart disabled'
     reload: 'MCCRestart reloaded'
     next: 'Next restart scheduled at {0}'
+    reason: 'Reason: {0}'
+    cancel: 'Manual restart cancelled'

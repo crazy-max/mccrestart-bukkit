@@ -19,6 +19,8 @@ public class Schedule implements Runnable {
 	public PluginManager pluginManager;
     public ArrayList<TimeUtils> times, warn;
     public TimeUtils delay, next;
+    public TimeUtils wait = null;
+    public String reason = null;
     public Boolean running = true;
 
     public Schedule()
@@ -109,43 +111,69 @@ public class Schedule implements Runnable {
 
     public void run()
     {
-        while( running )
+        while( running || wait != null )
         {
-        	if( ConfigUtils.type.equalsIgnoreCase(ConfigUtils.TYPE_TIMES) )
+        	if( wait != null )
         	{
-        		for( TimeUtils t : times )
+        		for( TimeUtils w : warn )
                 {
-                    for( TimeUtils w : warn )
+                    if( wait.doWarn(w) )
                     {
-                        if( t.doWarn(w) )
+                    	String[] warntime = {String.valueOf(w.Second)};
+                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.warnTimeMsg, warntime));
+                    	if( reason != null )
+                    	{
+                    		String[] thereason = {reason};
+                    		MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.reasonMsg, thereason));
+                    	}
+                    }
+                }
+        		
+        		if( wait.isNow() )
+        		{
+        			wait = null;
+        			reason = null;
+        			restart();
+        		}
+        	}
+        	else
+        	{
+        		if( ConfigUtils.type.equalsIgnoreCase(ConfigUtils.TYPE_TIMES) )
+            	{
+            		for( TimeUtils t : times )
+                    {
+                        for( TimeUtils w : warn )
+                        {
+                            if( t.doWarn(w) )
+                            {
+                            	String[] warntime = {String.valueOf(w.Second)};
+                            	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.warnTimeMsg, warntime));
+                            }
+                        }
+
+                        if( t.isNow() )
+                        {
+                        	restart();
+                        }
+                    }
+            	}
+            	else if( ConfigUtils.type.equalsIgnoreCase(ConfigUtils.TYPE_DELAY) )
+            	{
+            		for( TimeUtils w : warn )
+                    {
+                        if( next.doWarn(w) )
                         {
                         	String[] warntime = {String.valueOf(w.Second)};
                         	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.warnTimeMsg, warntime));
                         }
                     }
-
-                    if( t.isNow() )
-                    {
-                    	restart();
-                    }
-                }
-        	}
-        	else if( ConfigUtils.type.equalsIgnoreCase(ConfigUtils.TYPE_DELAY) )
-        	{
-        		for( TimeUtils w : warn )
-                {
-                    if( next.doWarn(w) )
-                    {
-                    	String[] warntime = {String.valueOf(w.Second)};
-                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.warnTimeMsg, warntime));
-                    }
-                }
-        		
-        		if( next.isNow() )
-        		{
-        			next.reset(delay);
-        			restart();
-        		}
+            		
+            		if( next.isNow() )
+            		{
+            			next.reset(delay);
+            			restart();
+            		}
+            	}
         	}
         	
             try
@@ -161,7 +189,7 @@ public class Schedule implements Runnable {
     
     public void restart()
     {
-    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.warnMsg);
+    	MCCRestart.server.broadcastMessage(ChatColor.RED + ConfigUtils.warnMsg);
     	
     	MCCRestart.server.savePlayers();
         for( org.bukkit.World w : MCCRestart.server.getWorlds() )
@@ -186,14 +214,13 @@ public class Schedule implements Runnable {
         {
         	((CraftServer) MCCRestart.server).getServer().a();
             Runtime.getRuntime().exec("java -jar plugins/MCCRestart.jar restart " + ConfigUtils.launcher);
-            Utils.Log("info", "Restarting server...");
-            Utils.Log("info", "It will be launched in 4 seconds...");
+            Utils.Log("info", "Restarting server. Please wait...");
             Thread.sleep(2000);
             System.exit(0);
         }
         catch(Exception e)
         {
-        	Utils.Log("warning", "Error while restarting server... See mccrestart.log");
+        	Utils.Log("warning", "Error while restarting server...");
             e.printStackTrace();
         }
     }

@@ -37,7 +37,7 @@ public class MCCRestart extends JavaPlugin
     
     public static String name;
     public static String version;
-    public static String path = "plugins/" + name + "/";
+    public static String path;
     public static String configYML = "config.yml";
     public static String messagesYML = "messages.yml";
     
@@ -49,10 +49,10 @@ public class MCCRestart extends JavaPlugin
         
         name = instance.getDescription().getName();
         version = instance.getDescription().getVersion();
+        path = "plugins/" + name + "/";
         
 		Utils.Log("info", "v" + version + " launched on " + System.getProperty("os.name"));
 		
-    	
         if( !loadConfig() ) return;
 		
 		try
@@ -113,12 +113,7 @@ public class MCCRestart extends JavaPlugin
         	{
     			if( args.length == 0 || args[0].compareToIgnoreCase("help") == 0 )
     			{
-					Utils.SendMessage(sender, ChatColor.WHITE + name + " commands:");
-					Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart help" + ChatColor.BLACK + " - " + ChatColor.WHITE + " List MCCRestart commands");
-					Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart on|off" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Actives/deactivates MCCRestart");
-					Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart reload" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Reload the plugin configuration");
-					Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart next" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Give the next time to restart");
-					Utils.SendMessage(sender, ChatColor.GREEN + "/restart" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Restart the server immediately");
+					Utils.Help("all", sender);
 					return true;
     			}
     			else if( args[0].compareToIgnoreCase("on") == 0 )
@@ -126,7 +121,6 @@ public class MCCRestart extends JavaPlugin
     				ConfigUtils.active = true;
     				if( !instance.ScheduleThread.running ) launchThread();
     				Utils.SendMessage(sender, ChatColor.GREEN + ConfigUtils.activeMsg);
-    				Utils.Log("info", "enabled");
     				return true;
     			}
     			else if( args[0].compareToIgnoreCase("off") == 0 )
@@ -150,7 +144,7 @@ public class MCCRestart extends JavaPlugin
     			}
     			else if( args[0].compareToIgnoreCase("next") == 0 )
     			{
-    				if( instance.ScheduleThread.running )
+    				if( instance.ScheduleThread.running || instance.ScheduleThread.wait != null )
     				{
 	    				String tempnext = "";
 	    				if( ConfigUtils.type.equalsIgnoreCase(ConfigUtils.TYPE_TIMES) )
@@ -161,6 +155,8 @@ public class MCCRestart extends JavaPlugin
 	    	            {
 	    	            	tempnext = TimeUtils.toString(instance.ScheduleThread.next);
 	    	            }
+	    				
+	    				tempnext = instance.ScheduleThread.wait != null ? TimeUtils.compare(TimeUtils.toString(instance.ScheduleThread.wait), tempnext) : tempnext;
 	    				
 	    				String[] nextrestart = {tempnext};
 	    				Utils.SendMessage(sender, ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, nextrestart));
@@ -176,8 +172,64 @@ public class MCCRestart extends JavaPlugin
         	}
         	else if( commandLabel.equalsIgnoreCase("restart") )
         	{
-        		instance.ScheduleThread.running = false;
-                instance.ScheduleThread.restart();
+        		if( args.length == 1 && !args[0].isEmpty() )
+    			{
+        			if( !args[0].equalsIgnoreCase("cancel") )
+        			{
+        				try
+            			{
+            				String[] delays = args[0].split(":");
+            				int minutes = Integer.parseInt(delays[0]);
+            				int seconds = Integer.parseInt(delays[1]);
+            				
+                        	instance.ScheduleThread.wait = new TimeUtils(0, minutes, seconds);
+                        	instance.ScheduleThread.wait.reset(instance.ScheduleThread.wait);
+                        	String[] warntime = {TimeUtils.toString(instance.ScheduleThread.wait)};
+                        	
+                        	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, warntime));
+                        	Utils.Log("info", "next restart scheduled at " + TimeUtils.toString(instance.ScheduleThread.wait));
+            			}
+            			catch (Exception ex)
+            			{
+            				Utils.Help("restart", sender);
+            			}
+        			}
+        			else
+        			{
+        				instance.ScheduleThread.wait = null;
+        				Utils.SendMessage(sender, ChatColor.RED + ConfigUtils.cancelMsg);
+    					Utils.Log("info", "manual restart cancelled");
+        			}
+    			}
+        		else if( args.length == 2 && !args[0].isEmpty() && !args[1].isEmpty() )
+        		{
+        			try
+        			{
+        				String[] delays = args[0].split(":");
+        				int minutes = Integer.parseInt(delays[0]);
+        				int seconds = Integer.parseInt(delays[1]);
+        				
+        				instance.ScheduleThread.wait = new TimeUtils(0, minutes, seconds);
+                    	instance.ScheduleThread.wait.reset(instance.ScheduleThread.wait);
+                    	String[] warntime = {TimeUtils.toString(instance.ScheduleThread.wait)};
+                    	String[] reason = {args[1]};
+                    	
+                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, warntime));
+                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.reasonMsg, reason));
+                    	Utils.Log("info", "next restart scheduled at " + TimeUtils.toString(instance.ScheduleThread.wait));
+                    	Utils.Log("info", "reason: " + args[1]);
+        			}
+        			catch (Exception ex)
+        			{
+        				Utils.Help("restart", sender);
+        			}
+        		}
+        		else if( args.length == 0 )
+        		{
+        			instance.ScheduleThread.running = false;
+                    instance.ScheduleThread.restart();
+        		}
+        		
                 return true;
         	}
     	}
