@@ -21,6 +21,7 @@ public class ConfigUtils {
 	public static String times;
 	public static String delay;
 	public static String type;
+	public static String stoptime;
 	
 	// messages.yml
 	public static String warnMsg;
@@ -52,6 +53,7 @@ public class ConfigUtils {
 			times = GetString("config.times", "12:00:00,23:00:00");
 			delay = GetString("config.delay", "02:00:00");
 			type = GetString("config.type", "delay");
+			stoptime = GetString("config.stoptime", "00:10");
 		}
 		else if( config.equals("messages") )
 		{

@@ -12,7 +12,7 @@ public class Launcher
     	{
 	        try
 	        {
-	        	Thread.sleep(6000);
+	        	Thread.sleep(3000);
 	        	
 	        	String launcher = "";
 
@@ -28,14 +28,14 @@ public class Launcher
 		        if( System.getProperty("os.name").toLowerCase().contains("win") )
 		        {
 		            BufferedWriter bw;
-		            p = Runtime. getRuntime().exec("cmd.exe /c start " + launcher);
+		            p = Runtime.getRuntime().exec("cmd.exe /c start " + launcher);
 		            bw = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 		            bw.write(launcher + "\r\n");
 		            bw.flush();
 		        }
 		        else
 		        {
-		            Runtime.getRuntime().exec(launcher);
+		            Runtime.getRuntime().exec("screen -dmS MinecraftServer java -Xmx256M -Xms256M -jar craftbukkit.jar");
 		        }
 	        }
 	        catch(Exception e)

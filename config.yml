@@ -1,13 +1,13 @@
 config:
-    # Active/deactivates plugin
+    # Active/deactivate plugin
     enable: 'true'
 
-    # Active/deactivates restart at times or delay (true or false)
+    # Active/deactivate restart at times or delay (true or false)
     autorestart: 'true'
     
-    # Args to launch the server (must be placed in your bukkit folder)
+    # Args to launch the server (must be placed in your root server folder)
     launcher: 'java -Xms512M -Xmx512M -jar craftbukkit.jar'
-    # If you want to launch a batch file (must be placed in your bukkit folder)
+    # If you want to launch a batch file (must be placed in your root server folder)
     #launcher: 'run.bat'
     
     # How many seconds before restart to show warning message to players. Separate seconds with a comma.
@@ -22,4 +22,5 @@ config:
     # Choose type of restart (times or delay)
     type: 'delay'
     
-    
+    # Delay between stop and restart server if you have a lot of plugins (use minutes:secondes)
+    stoptime: '00:10'

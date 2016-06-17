@@ -3,11 +3,15 @@ package fr.crazyws.mccrestart;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Logger;
+
+import net.minecraft.server.ConsoleCommandHandler;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -157,7 +161,7 @@ public class MCCRestart extends JavaPlugin
 		    				tempnext = instance.ScheduleThread.wait != null ? TimeUtils.compare(TimeUtils.toString(instance.ScheduleThread.wait), tempnext) : tempnext;
 		    				
 		    				String[] nextrestart = {tempnext};
-		    				Utils.SendMessage(sender, ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, nextrestart));
+		    				server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, nextrestart));
 		    				Utils.Log("info", "next restart scheduled at " + nextrestart[0]);
 	    				}
 	    				else
@@ -192,7 +196,7 @@ public class MCCRestart extends JavaPlugin
 	                        	instance.ScheduleThread.wait.reset(instance.ScheduleThread.wait);
 	                        	String[] warntime = {TimeUtils.toString(instance.ScheduleThread.wait)};
 	                        	
-	                        	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, warntime));
+	                        	server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, warntime));
 	                        	Utils.Log("info", "next restart scheduled at " + TimeUtils.toString(instance.ScheduleThread.wait));
 	            			}
 	            			catch (Exception ex)
@@ -203,11 +207,14 @@ public class MCCRestart extends JavaPlugin
 	        			else
 	        			{
 	        				instance.ScheduleThread.wait = null;
-	        				Utils.SendMessage(sender, ChatColor.RED + ConfigUtils.cancelMsg);
+	        				MCCRestart.server.broadcastMessage(ChatColor.RED + ConfigUtils.cancelMsg);
 	    					Utils.Log("info", "manual restart cancelled");
+	    					
+	    					ConsoleCommandSender ccs = new ConsoleCommandSender(server);
+	    					server.dispatchCommand(ccs, "mccrestart next");
 	        			}
 	    			}
-	        		else if( args.length == 2 && !args[0].isEmpty() && !args[1].isEmpty() )
+	        		else if( args.length >= 2 && !args[0].isEmpty() )
 	        		{
 	        			try
 	        			{
@@ -215,15 +222,26 @@ public class MCCRestart extends JavaPlugin
 	        				int minutes = Integer.parseInt(delays[0]);
 	        				int seconds = Integer.parseInt(delays[1]);
 	        				
+	        				String reasonStr = "";
+	        	        	int i = 0;
+	        	            for(String arg : args)
+	        	            {
+	        	                if( i > 0 ) reasonStr += arg + " ";
+	        	                i++;
+	        	            }
+	        	            reasonStr = reasonStr.trim();
+	        				
 	        				instance.ScheduleThread.wait = new TimeUtils(0, minutes, seconds);
 	                    	instance.ScheduleThread.wait.reset(instance.ScheduleThread.wait);
 	                    	String[] warntime = {TimeUtils.toString(instance.ScheduleThread.wait)};
-	                    	String[] reason = {args[1]};
+	                    	
+	                    	instance.ScheduleThread.reason = reasonStr;
+	                    	String[] reason = {reasonStr};
 	                    	
 	                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.nextMsg, warntime));
 	                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.reasonMsg, reason));
 	                    	Utils.Log("info", "next restart scheduled at " + TimeUtils.toString(instance.ScheduleThread.wait));
-	                    	Utils.Log("info", "reason: " + args[1]);
+	                    	Utils.Log("info", "reason: " + instance.ScheduleThread.reason);
 	        			}
 	        			catch (Exception ex)
 	        			{

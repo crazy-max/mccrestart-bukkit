@@ -122,7 +122,6 @@ public class Schedule implements Runnable {
 	        		if( wait.isNow() )
 	        		{
 	        			wait = null;
-	        			reason = null;
 	        			restart();
 	        		}
 	        	}
@@ -168,9 +167,12 @@ public class Schedule implements Runnable {
     	currentWarn = 0;
     	
     	MCCRestart.server.savePlayers();
+    	Utils.Log("info", "Players saved");
+    	
         for( org.bukkit.World w : MCCRestart.server.getWorlds() )
         {
-            w.save();
+        	w.save();
+        	Utils.Log("info", w.getName() + " saved");
         }
         
         for( Plugin p : pluginManager.getPlugins() )
@@ -181,16 +183,32 @@ public class Schedule implements Runnable {
         	}
         }
         
+        Utils.Log("info", "Plugins saved and disabled");
+        
         for( org.bukkit.entity.Player p : MCCRestart.server.getOnlinePlayers() )
         {
-            p.kickPlayer(ChatColor.RED + ConfigUtils.restartMsg);
+        	String reasonStr = "";
+        	if( reason != null )
+        	{
+        		String[] thereason = {reason};
+        		reasonStr = "\r\n" + ChatColor.GOLD + ConfigUtils.GetParams(ConfigUtils.reasonMsg, thereason);
+        		reason = null;
+        	}
+            p.kickPlayer(ChatColor.RED + ConfigUtils.restartMsg + reasonStr);
         }
+        
+        Utils.Log("info", "Players kicked");
     	
     	try
         {
+        	Utils.Log("info", "Waiting for " + ConfigUtils.stoptime + " before restarting. Please wait...");
+        	String[] stoptime = ConfigUtils.stoptime.split(":");
+        	Thread.sleep((Integer.parseInt(stoptime[0]) * 60 + Integer.parseInt(stoptime[1])) * 1000);
+        	
         	((CraftServer) MCCRestart.server).getServer().a();
             Runtime.getRuntime().exec("java -jar plugins/MCCRestart.jar restart " + ConfigUtils.launcher);
-            Utils.Log("info", "Restarting server. Please wait...");
+            Utils.Log("info", "Restarting server...");
+            
             Thread.sleep(2000);
             System.exit(0);
         }
