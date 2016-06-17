@@ -1,0 +1,13 @@
+name: MCCRestart
+version: 1.0.1
+main: fr.crazyws.mccrestart.MCCRestart
+commands:
+  mccrestart:
+    description: All MCCRestart commands
+    usage: |
+      /<command> help - List MCCRestart commands
+      /<command> on|off - Actives/deactivates MCCRestart
+      /restart - Restart the server immediately
+  restart:
+    description: Restart the server immediately
+    usage: /<command>

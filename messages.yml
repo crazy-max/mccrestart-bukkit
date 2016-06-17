@@ -1,0 +1,6 @@
+﻿messages:
+    warn: 'The server is being restarted...'
+    warnTime: 'The server restarts in {0} seconds...'
+    restart: 'The server is restarting...'
+    active: 'MCCRestart enabled!'
+    inactive: 'MCCRestart disabled!'

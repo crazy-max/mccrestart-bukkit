@@ -1,0 +1,14 @@
+config:
+    # Active/deactivates plugin (true or false)
+    active: 'true'
+    
+    # Args to launch the server (must be placed in your bukkit folder)
+    launcher: 'java -Xms512M -Xmx512M -jar craftbukkit.jar'
+    # If you want to launch a batch file (must be placed in your bukkit folder)
+    #launcher: 'run.bat'
+    
+    # Time when the server is restarting. Use 24-hour time and separate times with a comma.
+    stoptimes: '12:00:00,23:00:00'
+    
+    # How many seconds before restart to show warning message to players. Separate seconds with a comma.
+    warntimes: '30,10'
