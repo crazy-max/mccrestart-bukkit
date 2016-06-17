@@ -70,6 +70,10 @@ public class TimeUtils {
         today += Calendar.getInstance().get(Calendar.MINUTE) * 60;
         today += Calendar.getInstance().get(Calendar.SECOND);
         
+        Utils.Log("info", "times s: " + times.get(0).Second);
+        Utils.Log("info", "times m: " + times.get(0).Minute);
+        Utils.Log("info", "times h: " + times.get(0).Hour);
+        
         String result = "";
         int current = 0;
         for( TimeUtils t : times )

@@ -1,4 +1,7 @@
 config:
+    # Active/deactivates plugin
+    enable: 'true'
+
     # Active/deactivates restart at times or delay (true or false)
     autorestart: 'true'
     

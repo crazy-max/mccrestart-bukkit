@@ -43,11 +43,9 @@ public class Utils {
 		if( type.equalsIgnoreCase("mcc") || type.equalsIgnoreCase("all") )
 		{
 			Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart help" + ChatColor.BLACK + " - " + ChatColor.WHITE + " List MCCRestart commands");
-			Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart on|off" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Actives/deactivates MCCRestart");
 			Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart reload" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Reload the plugin configuration");
 			Utils.SendMessage(sender, ChatColor.GREEN + "/mccrestart next" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Give the next time to restart");
 			Utils.Log("info", "/mccrestart help - List MCCRestart commands");
-			Utils.Log("info", "/mccrestart on|off - Actives/deactivates MCCRestart");
 			Utils.Log("info", "/mccrestart reload - Reload the plugin configuration");
 			Utils.Log("info", "/mccrestart next - Give the next time to restart");
 		}

@@ -14,7 +14,8 @@ public class ConfigUtils {
 	public static String TYPE_DELAY = "delay";
 	
 	// config.yml
-	public static boolean active;
+	public static boolean enable;
+	public static boolean autorestart;
 	public static String launcher;
 	public static String warn;
 	public static String times;
@@ -31,6 +32,7 @@ public class ConfigUtils {
 	public static String nextMsg;
 	public static String reasonMsg;
 	public static String cancelMsg;
+	public static String norestartMsg;
 
 	public ConfigUtils(String config, String directory, String filename)
 	{
@@ -43,7 +45,8 @@ public class ConfigUtils {
 	{
 		if( config.equals("config") ) 
 		{
-			active = GetBoolean("config.autorestart", true);
+			enable = GetBoolean("config.enable", true);
+			autorestart = GetBoolean("config.autorestart", true);
 			launcher = GetString("config.launcher", "java -Xms512M -Xmx512M -jar craftbukkit.jar");
 			warn = GetString("config.warn", "30,10");
 			times = GetString("config.times", "12:00:00,23:00:00");
@@ -61,6 +64,7 @@ public class ConfigUtils {
 			nextMsg = GetString("messages.next", "Next restart scheduled at {0}");
 			reasonMsg = GetString("messages.reason", "Reason: {0}");
 			cancelMsg = GetString("messages.cancel", "Manual restart cancelled");
+			norestartMsg = GetString("messages.cancel", "No restart is scheduled");
 		}
 	}
 	
