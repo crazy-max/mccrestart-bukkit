@@ -4,3 +4,4 @@
     restart: 'The server is restarting...'
     active: 'MCCRestart enabled!'
     inactive: 'MCCRestart disabled!'
+    reload: 'MCCRestart reloaded!'

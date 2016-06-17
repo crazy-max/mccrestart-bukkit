@@ -1,6 +1,6 @@
 config:
-    # Active/deactivates plugin (true or false)
-    active: 'true'
+    # Active/deactivates restart at stoptimes (true or false)
+    autorestart: 'true'
     
     # Args to launch the server (must be placed in your bukkit folder)
     launcher: 'java -Xms512M -Xmx512M -jar craftbukkit.jar'

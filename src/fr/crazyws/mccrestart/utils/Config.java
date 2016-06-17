@@ -22,11 +22,13 @@ public class Config {
 	public static String restartMsg;
 	public static String activeMsg;
 	public static String inactiveMsg;
+	public static String reloadMsg;
 
 	public Config(String config, String directory, String filename)
 	{
 		template = new Configuration(new File(directory, filename));
 		template.load();
+		
 		DefaultSettings(config);
 	}
 	
@@ -34,37 +36,23 @@ public class Config {
 	{
 		if( config.equals("config") ) 
 		{
-			active = GetConfigBoolean("config.active", true);
-			launcher = GetConfigString("config.launcher", "java -Xms512M -Xmx512M -jar craftbukkit.jar");
-			stoptimes = GetConfigString("config.stoptimes", "12:00:00,23:00:00");
-			warntimes = GetConfigString("config.warntimes", "30,10");
+			active = GetBoolean("config.autorestart", true);
+			launcher = GetString("config.launcher", "java -Xms512M -Xmx512M -jar craftbukkit.jar");
+			stoptimes = GetString("config.stoptimes", "12:00:00,23:00:00");
+			warntimes = GetString("config.warntimes", "30,10");
 		}
 		else if( config.equals("messages") )
 		{
-			warnMsg = GetConfigString("messages.warn", "The server is being restarted...");
-			warnTimeMsg = GetConfigString("messages.warnTime", "The server restarts in {0} seconds...");
-			restartMsg = GetConfigString("messages.restart", "The server is restarting...");
-			activeMsg = GetConfigString("messages.active", MCCRestart.name + " v" + MCCRestart.version + " enabled!");
-			inactiveMsg = GetConfigString("messages.inactive", MCCRestart.name + " v" + MCCRestart.version + " enabled!");
+			warnMsg = GetString("messages.warn", "The server is being restarted...");
+			warnTimeMsg = GetString("messages.warnTime", "The server restarts in {0} seconds...");
+			restartMsg = GetString("messages.restart", "The server is restarting...");
+			activeMsg = GetString("messages.active", MCCRestart.name + " enabled!");
+			inactiveMsg = GetString("messages.inactive", MCCRestart.name + " disabled!");
+			reloadMsg = GetString("messages.reload", MCCRestart.name + " reloaded!");
 		}
 	}
 	
-	public boolean Save(String key, String line)
-	{
-		try
-		{
-			template.load();
-			template.setProperty(key, line);
-			template.save();
-			return true;
-		}
-		catch(Exception e)
-		{
-			return false;
-		}
-	}
-	
-	public static String GetConfigParams(String msg, String[] params)
+	public static String GetParams(String msg, String[] params)
 	{
 		String finalMsg = msg;
 		if( params.length > 0 ){
@@ -78,18 +66,14 @@ public class Config {
 		return finalMsg;
 	}
 	
-	public static String GetConfigString(String key, String defaultvalue)
+	public static String GetString(String key, String defaultvalue)
 	{
 		return template.getString(key, defaultvalue).trim();
 	}
 	
-	public static boolean GetConfigBoolean(String key, boolean defaultvalue)
+	public static boolean GetBoolean(String key, boolean defaultvalue)
 	{
-		return template.getBoolean(key, defaultvalue);
-	}
-	
-	public void DeleteConfigValue(String key) 
-	{
-		template.removeProperty(key);
+		String parse = template.getString(key, String.valueOf(defaultvalue));
+		return Boolean.valueOf(parse);
 	}
 }

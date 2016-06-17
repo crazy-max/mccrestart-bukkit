@@ -35,7 +35,7 @@ public class MCCRestart extends JavaPlugin
     public static Logger log = Logger.getLogger("Minecraft");
     
     public static String name = "MCCRestart";
-    public static String version = "1.1.0";
+    public static String version = "1.1.5";
     public static String path = "plugins/" + name + "/";
     public static String configYML = "config.yml";
     public static String messagesYML = "messages.yml";
@@ -62,33 +62,33 @@ public class MCCRestart extends JavaPlugin
         	permissions = null;
         }
         
-        ScheduleThread = new Schedule();
+        launchThread();
+    }
+	
+	public void launchThread()
+	{
+		ScheduleThread = new Schedule();
         
         if( ScheduleThread.running )
         {
         	new Thread(ScheduleThread).start();
-            Util.Log("info", name + " v" + version + " enabled on " + System.getProperty("os.name"));
-            Util.Log("info", "Minecraft scheduled for restart at time(s):");
-            
-            String stoptimes = "";
-            for( String chars : Config.stoptimes.split(",") )
-            {
-            	stoptimes += chars + " ";
-            }
-            
-            Util.Log("info", stoptimes);
+            Util.Log("info", "enabled");
         }
-    }
+        else
+        {
+        	Util.Log("info", "disabled");
+        }
+	}
 
     public void onDisable()
     {
-    	ScheduleThread.running = false;
+    	instance.ScheduleThread.running = false;
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args)
     {
     	server = getServer();
-        PluginManager pluginManager = server.getPluginManager();
+    	PluginManager pluginManager = server.getPluginManager();
     	
     	if( canUseCommands(sender) )
     	{
@@ -101,23 +101,52 @@ public class MCCRestart extends JavaPlugin
         				sender.sendMessage(ChatColor.WHITE + name + " commands:");
 						sender.sendMessage(ChatColor.GREEN + "/mccrestart help" + ChatColor.BLACK + " - " + ChatColor.WHITE + " List MCCRestart commands");
 						sender.sendMessage(ChatColor.GREEN + "/mccrestart on|off" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Actives/deactivates MCCRestart");
+						sender.sendMessage(ChatColor.GREEN + "/mccrestart reload" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Reload the plugin configuration");
 						sender.sendMessage(ChatColor.GREEN + "/restart" + ChatColor.BLACK + " - " + ChatColor.WHITE + " Restart the server immediately");
 						return true;
         			}
         			else if( args[0].compareToIgnoreCase("on") == 0 )
         			{
-        				ConfigFile.Save("config.active", "true");
-        				pluginManager.enablePlugin(((Plugin) (this)));
-        				sender.sendMessage(ChatColor.GREEN + Config.activeMsg);
-        				Util.Log("info", name + " v" + version + " enabled");
+        				Config.active = true;
+        				
+        				if( !instance.ScheduleThread.running )
+        				{
+        					launchThread();
+        				}
+        				
+        				if (sender instanceof Player)
+        				{
+        					sender.sendMessage(ChatColor.GREEN + Config.activeMsg);
+        				}
+        				
         				return true;
         			}
         			else if( args[0].compareToIgnoreCase("off") == 0 )
         			{
-        				ConfigFile.Save("config.active", "false");
+        				Config.active = false;
+        				instance.ScheduleThread.running = false;
+        				if (sender instanceof Player)
+        				{
+        					sender.sendMessage(ChatColor.RED + Config.inactiveMsg);
+        				}
+        				
+        				Util.Log("info", "disabled");
+        				return true;
+        			}
+        			else if( args[0].compareToIgnoreCase("reload") == 0 )
+        			{
         				pluginManager.disablePlugin(((Plugin) (this)));
-        				sender.sendMessage(ChatColor.RED + Config.inactiveMsg);
-        				Util.Log("info", name + " v" + version + " disabled");
+        				pluginManager.enablePlugin(((Plugin) (this)));
+        				
+        				if( pluginManager.isPluginEnabled(((Plugin) (this))) )
+        				{
+        					if (sender instanceof Player)
+            				{
+            					sender.sendMessage(ChatColor.RED + Config.reloadMsg);
+            				}
+            				
+            				Util.Log("info", "reloaded");
+        				}
         				return true;
         			}
                 }
@@ -139,27 +168,24 @@ public class MCCRestart extends JavaPlugin
     
     private boolean loadConfig()
     {
-    	boolean result = true; 
-    	PluginManager pluginManager = server.getPluginManager();
+    	boolean result = true;
     	
     	MessagesFile = new Config("messages", MCCRestart.path, messagesYML);
-        if( !new File(MCCRestart.path + messagesYML).exists() || MessagesFile.GetConfigString("messages", "") == null )
+        if( !new File(MCCRestart.path + messagesYML).exists() || MessagesFile.GetString("messages", "") == null )
 		{
         	if( !copyFile(messagesYML, MCCRestart.path) )
         	{
-        		Util.Log("severe", messagesYML + " could not be created -- " + name + " disabled...");
-        		pluginManager.disablePlugin(((Plugin) (this)));
+        		Util.Log("severe", messagesYML + " could not be created");
         		result = false;
         	}
         }
         
         ConfigFile = new Config("config", MCCRestart.path, configYML);
-        if( !new File(MCCRestart.path + configYML).exists() || MessagesFile.GetConfigString("config", "") == null )
+        if( !new File(MCCRestart.path + configYML).exists() || MessagesFile.GetString("config", "") == null )
 		{
 			if( !copyFile(configYML, MCCRestart.path) )
 			{
-				Util.Log("severe", configYML + " could not be created -- " + name + " disabled...");
-        		pluginManager.disablePlugin(((Plugin) (this)));
+				Util.Log("severe", configYML + " could not be created");
         		result = false;
 			}
 		}

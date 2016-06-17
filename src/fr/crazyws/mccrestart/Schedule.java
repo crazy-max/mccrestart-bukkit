@@ -27,25 +27,21 @@ public class Schedule implements Runnable {
     	
     	if( !Config.active )
     	{
-    		Util.Log("info", MCCRestart.name + " disabled. Check your " + MCCRestart.configYML);
     		running = false;
-    		plugin.onDisable();
 		    return;
     	}
     	
     	if( Config.stoptimes == null )
     	{
-    		Util.Log("warning", "stoptimes property empty -- " + MCCRestart.name + " disabled...");
+    		Util.Log("warning", "stoptimes property empty");
     		running = false;
-    		plugin.onDisable();
 		    return;
     	}
     	
     	if( Config.launcher == null )
     	{
-    		Util.Log("warning", "launcher property empty -- " + MCCRestart.name + " disabled...");
+    		Util.Log("warning", "launcher property empty");
     		running = false;
-    		plugin.onDisable();
 		    return;
     	}
     	
@@ -62,9 +58,8 @@ public class Schedule implements Runnable {
             }
             catch(Exception e)
             {
-            	Util.Log("warning", "Error to add stoptime " + chars + " -- " + MCCRestart.name + " disabled...");
+            	Util.Log("warning", "Error to add stoptime " + chars);
             	running = false;
-            	plugin.onDisable();
 			    return;
             }
         }
@@ -77,9 +72,8 @@ public class Schedule implements Runnable {
             }
         	catch(Exception e)
         	{
-        		Util.Log("warning", "Error to add warntime " + chars + " -- " + MCCRestart.name + " disabled...");
+        		Util.Log("warning", "Error to add warntime " + chars);
             	running = false;
-            	plugin.onDisable();
 			    return;
         	}
         }
@@ -96,7 +90,7 @@ public class Schedule implements Runnable {
                     if( t.doWarn(w) )
                     {
                     	String[] warntime = {String.valueOf(w.Second)};
-                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + Config.GetConfigParams(Config.warnTimeMsg, warntime));
+                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + Config.GetParams(Config.warnTimeMsg, warntime));
                     }
                 }
 
