@@ -1,5 +1,5 @@
 config:
-    # Active/deactivates restart at stoptimes (true or false)
+    # Active/deactivates restart at times or delay (true or false)
     autorestart: 'true'
     
     # Args to launch the server (must be placed in your bukkit folder)
@@ -7,8 +7,16 @@ config:
     # If you want to launch a batch file (must be placed in your bukkit folder)
     #launcher: 'run.bat'
     
-    # Time when the server is restarting. Use 24-hour time and separate times with a comma.
-    stoptimes: '12:00:00,23:00:00'
-    
     # How many seconds before restart to show warning message to players. Separate seconds with a comma.
-    warntimes: '30,10'
+    warn: '30,10'
+    
+    # Scheduled times when the server is restarting. Use 24-hour time and separate times with a comma.
+    times: '12:00:00,23:00:00'
+    
+    # Delay time between each restart. Use 24-hour time.
+    delay: '02:00:00'
+    
+    # Choose type of restart (times or delay)
+    type: 'delay'
+    
+    

@@ -1,5 +1,6 @@
 name: MCCRestart
-version: 1.1.5
+version: 1.2.0
+author: Cr@zy
 main: fr.crazyws.mccrestart.MCCRestart
 commands:
   mccrestart:
@@ -8,6 +9,7 @@ commands:
       /<command> help - List MCCRestart commands
       /<command> on|off - Actives/deactivates MCCRestart
       /<command> reload - Reload the plugin configuration
+      /<command> next - Give the next time to restart
       /restart - Restart the server immediately
   restart:
     description: Restart the server immediately

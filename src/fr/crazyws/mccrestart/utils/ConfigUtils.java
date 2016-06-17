@@ -6,15 +6,20 @@ import org.bukkit.util.config.Configuration;
 
 import fr.crazyws.mccrestart.MCCRestart;
 
-public class Config {
+public class ConfigUtils {
 	
 	public static Configuration template = null;
+	
+	public static String TYPE_TIMES = "times";
+	public static String TYPE_DELAY = "delay";
 	
 	// config.yml
 	public static boolean active;
 	public static String launcher;
-	public static String stoptimes;
-	public static String warntimes;
+	public static String warn;
+	public static String times;
+	public static String delay;
+	public static String type;
 	
 	// messages.yml
 	public static String warnMsg;
@@ -23,12 +28,12 @@ public class Config {
 	public static String activeMsg;
 	public static String inactiveMsg;
 	public static String reloadMsg;
+	public static String nextMsg;
 
-	public Config(String config, String directory, String filename)
+	public ConfigUtils(String config, String directory, String filename)
 	{
 		template = new Configuration(new File(directory, filename));
 		template.load();
-		
 		DefaultSettings(config);
 	}
 	
@@ -38,17 +43,20 @@ public class Config {
 		{
 			active = GetBoolean("config.autorestart", true);
 			launcher = GetString("config.launcher", "java -Xms512M -Xmx512M -jar craftbukkit.jar");
-			stoptimes = GetString("config.stoptimes", "12:00:00,23:00:00");
-			warntimes = GetString("config.warntimes", "30,10");
+			warn = GetString("config.warn", "30,10");
+			times = GetString("config.times", "12:00:00,23:00:00");
+			delay = GetString("config.delay", "02:00:00");
+			type = GetString("config.type", "delay");
 		}
 		else if( config.equals("messages") )
 		{
 			warnMsg = GetString("messages.warn", "The server is being restarted...");
 			warnTimeMsg = GetString("messages.warnTime", "The server restarts in {0} seconds...");
 			restartMsg = GetString("messages.restart", "The server is restarting...");
-			activeMsg = GetString("messages.active", MCCRestart.name + " enabled!");
-			inactiveMsg = GetString("messages.inactive", MCCRestart.name + " disabled!");
-			reloadMsg = GetString("messages.reload", MCCRestart.name + " reloaded!");
+			activeMsg = GetString("messages.active", MCCRestart.name + " enabled");
+			inactiveMsg = GetString("messages.inactive", MCCRestart.name + " disabled");
+			reloadMsg = GetString("messages.reload", MCCRestart.name + " reloaded");
+			nextMsg = GetString("messages.next", "Next restart scheduled at {0}");
 		}
 	}
 	
