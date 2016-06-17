@@ -1,5 +1,5 @@
 name: MCCRestart
-version: 1.0.1
+version: 1.1.0
 main: fr.crazyws.mccrestart.MCCRestart
 commands:
   mccrestart:

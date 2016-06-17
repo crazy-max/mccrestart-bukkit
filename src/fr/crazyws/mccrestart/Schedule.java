@@ -85,20 +85,6 @@ public class Schedule implements Runnable {
         }
     }
 
-    public void forceShutdown()
-    {
-    	
-    	restart();
-    	
-        try
-        {
-            restart();
-        }
-        catch(Exception e)
-        {
-        }
-    }
-
     public void run()
     {
         while( running )
@@ -110,7 +96,7 @@ public class Schedule implements Runnable {
                     if( t.doWarn(w) )
                     {
                     	String[] warntime = {String.valueOf(w.Second)};
-                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + Config.GetConfigParams(Config.warnTimeMsg, warntime) );
+                    	MCCRestart.server.broadcastMessage(ChatColor.GOLD + Config.GetConfigParams(Config.warnTimeMsg, warntime));
                     }
                 }
 

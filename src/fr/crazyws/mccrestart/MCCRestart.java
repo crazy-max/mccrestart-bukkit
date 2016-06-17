@@ -35,7 +35,7 @@ public class MCCRestart extends JavaPlugin
     public static Logger log = Logger.getLogger("Minecraft");
     
     public static String name = "MCCRestart";
-    public static String version = "1.0.1";
+    public static String version = "1.1.0";
     public static String path = "plugins/" + name + "/";
     public static String configYML = "config.yml";
     public static String messagesYML = "messages.yml";
@@ -60,7 +60,6 @@ public class MCCRestart extends JavaPlugin
         catch(NullPointerException npe)
         {
         	permissions = null;
-        	Util.Log("info", "Permissions disabled.");
         }
         
         ScheduleThread = new Schedule();
@@ -126,7 +125,7 @@ public class MCCRestart extends JavaPlugin
         	else if( commandLabel.equalsIgnoreCase("restart") )
         	{
         		instance.ScheduleThread.running = false;
-                instance.ScheduleThread.forceShutdown();
+                instance.ScheduleThread.restart();
                 return true;
         	}
     	}
