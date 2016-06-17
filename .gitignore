@@ -1,15 +1,3 @@
-# Eclipse
-.metadata
 bin/
 tmp/
 *.tmp
-.settings/
-
-# Eclipse Core
-.project
-
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
