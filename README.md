@@ -1,8 +1,8 @@
-# MCCRestart [![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/crazyws)
+# MCCRestart [![Download](https://img.shields.io/badge/download-1.2.5-brightgreen.svg)](https://github.com/crazy-max/mccrestart-bukkit/releases/download/1.2.5/MCCRestart.jar) [![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/crazyws)
 
-> Bukkit link : https://bukkit.org/threads/inactive-admn-mccrestart-v1-2-5-scheduled-and-delayed-server-restarts-677.12165
+> More info on [Bukkit](https://bukkit.org/threads/inactive-admn-mccrestart-v1-2-5-scheduled-and-delayed-server-restarts-677.12165).
 
-![](https://raw.github.com/crazy-max/mccrestart-bukkit/master/resources/mccrstart.png)
+![](https://raw.githubusercontent.com/crazy-max/mccrestart-bukkit/master/resources/mccrestart.png)
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
