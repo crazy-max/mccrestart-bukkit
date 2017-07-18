@@ -1,6 +1,6 @@
 # MCCRestart [![Download](https://img.shields.io/badge/download-1.2.5-brightgreen.svg)](https://github.com/crazy-max/mccrestart-bukkit/releases/download/1.2.5/MCCRestart.jar) [![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/crazyws)
 
-> Topic on [Bukkit forum](https://bukkit.org/threads/inactive-admn-mccrestart-v1-2-5-scheduled-and-delayed-server-restarts-677.12165).
+> Topic on [Bukkit forum](http://bit.ly/2u6qtkl).
 
 ![](https://raw.githubusercontent.com/crazy-max/mccrestart-bukkit/master/resources/mccrestart.png)
 
