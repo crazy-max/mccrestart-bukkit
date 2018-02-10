@@ -1,25 +1,8 @@
-# MCCRestart [![Download](https://img.shields.io/badge/download-1.2.5-brightgreen.svg)](https://github.com/crazy-max/mccrestart-bukkit/releases/download/1.2.5/MCCRestart.jar) [![Donate Paypal](https://img.shields.io/badge/donate-paypal-blue.svg)](https://www.paypal.me/crazyws)
+# MCCRestart [![Download](https://img.shields.io/badge/download-1.2.5-brightgreen.svg)](https://github.com/crazy-max/mccrestart-bukkit/releases/download/1.2.5/MCCRestart.jar)
 
 > Topic on [Bukkit forum](http://bit.ly/2u6qtkl).
 
 ![](https://raw.githubusercontent.com/crazy-max/mccrestart-bukkit/master/resources/mccrestart.png)
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-
-- [About](#about)
-- [Features](#features)
-- [OS Compatibility](#os-compatibility)
-- [Commands](#commands)
-- [Permission-nodes](#permission-nodes)
-- [config.yml example](#configyml-example)
-- [messages.yml example](#messagesyml-example)
-- [Issues](#issues)
-- [TODO](#todo)
-- [License](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## About
 
